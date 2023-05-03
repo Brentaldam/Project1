@@ -2,9 +2,8 @@
 
 <h2> Find Customers</h2>
 
-<h4>Total number of records in the database: <%= totRecs %></h4>
+<h4>Total number of records in the database: <span style="color: lightgreen;"><%= totRecs %></span></h4>
 
-<!-- Not using bootstrap, just a simple form that you may enhance -->
 <form action="/search" method="POST">
     <table>
         <tr>
@@ -37,12 +36,33 @@
             <td><input type="text" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
             <td>(greter than or equal to)</td>
         </tr>
-        <tr>
+        
             <td span="2">
-                <button class="button" style="float: left" type="submit" value="Find" ><span class="text">Find</span></button>&nbsp;&nbsp;&nbsp;
-                <button class="button" style="float: right" type="reset" value="Reset" ><span class="text">Reset</span></button>
+
+                <br>
+                <br>
+                    <button class="button button--pen" type="submit" value="Find" style="float:left">
+                        <div class="button__wrapper">
+                            <span class="button__text">Find</span>
+                        </div>
+                        <div class="characterBox">
+                            <div class="character wakeup">
+                                <div class="character__face"></div>
+                                <div class="charactor__face2"></div>
+                            </div>
+                            <div class="character wakeup">
+                                <div class="character__face"></div>
+                                <div class="charactor__face2"></div>
+                            </div>
+                            <div class="character">
+                                <div class="character__face"></div>
+                                <div class="charactor__face2"></div>
+                            </div>
+                    </button>&nbsp;&nbsp;&nbsp;
+                    <button class="button-arounder" type="reset" value="Reset">Reset</button>
+                    
             </td>
-        </tr>
+        
     </table>
 </form>
 
@@ -73,8 +93,11 @@
                         <td><%= customer.cussalesytd %> </td>
                         <td><%= customer.cussalesprev %> </td>
                         <td span="2">
-                            <button class='edit' style="float: left" onclick="window.location='/updatecustomer';">Edit</button>
-                            <button class='delete' style="float: right" onclick="window.location='/deletecustomer';" >Delete</button>
+                            <div class="buttons" >
+                            <button onclick="window.location='/updatecustomer';"style="background-color: rgb(57, 56, 56)" >Edit</button>
+                            <button onclick="window.location='/deletecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56)" >Delete</button>
+
+                        </div>
                         </td>                
                     </tr>
                 <% }); %>

@@ -1,10 +1,34 @@
 <%- include("_header") -%>
 
-<h2>Customer Export</h2>
 
-<h4>Total number of records in the Database: <%= totRecs %></h4>
-<h4>Enter a file name and click "Export Customers"</h4>
+    <title>Customer Export</title>
+</head>
+<body>
+    <h1>Customer Export</h1>
+    <h2>Enter a file name and click Export Customers</h2>
+    <h4>Total number of records in the database: <span style="color: lightgreen;"><%= totRecs %></span></h4>
 
-<h4>File Name:</h4> <input></input>
-<button class="buttonC" type="submit" role="button" value="Export Customers" >Export Customers</button>
+
+    <form action="/export" method="POST">
+        <label for="filename">File name:</label>
+        <input type="text" name="filename" id="filename" value="export.txt" /><p></p>
+        <!-- <button class="buttonC" type="submit" role="button" value="Export Customers" >Export Customers</button> -->
+        <!-- <button class="button-82-pushable" role="button" type="submit"><span class="button-82-shadow"></span><span
+                class="button-82-edge"></span><span class="button-82-front text">Export Customers</span></button> -->
+                <br>
+                <br>
+                    <button type="submit" class="button69" style="--color: #6eff3e; background-color:black">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Export Customers
+                    </button>
+                <br>
+                <br>
+                <br>
+    </form>
+
+</body>
+</html>
 <%- include("_footer") -%> 
