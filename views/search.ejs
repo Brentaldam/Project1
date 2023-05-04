@@ -23,17 +23,17 @@
         </tr>
         <tr>
             <td><label for="cusstate">State</label>:</td>
-            <td><input type="text" name="cusstate" id="cusstate" value="<%= cus.cusstate %>" /></td>
+            <td><input type="text" name="cusstate" id="cusstate" value="<%= cus.cusstate %>" pattern="[A-Za-z]{2}" maxlength="2" Title="Please enter a 2 character state"/></td>
             <td>(equals)</td>
         </tr>
         <tr>
-            <td><label for="cusSalesytd">State YTD</label>:</td>
-            <td><input type="text" name="cussalesytd" id="cusSalesytd" value="<%= cus.cussalesytd %>" /></td>
+            <td><label for="cusSalesytd">Sales YTD</label>:</td>
+            <td><input type="number" name="cussalesytd" id="cusSalesytd" value="<%= cus.cussalesytd %>" /></td>
             <td>(greter than or equal to)</td>
         </tr>
         <tr>
             <td><label for="cussalesprev">Previous Years Sales</label>:</td>
-            <td><input type="text" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
+            <td><input type="number" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
             <td>(greter than or equal to)</td>
         </tr>
         
@@ -94,8 +94,8 @@
                         <td><%= customer.cussalesprev %> </td>
                         <td span="2">
                             <div class="buttons" >
-                            <button onclick="window.location='/updatecustomer';"style="background-color: rgb(57, 56, 56)" >Edit</button>
-                            <button onclick="window.location='/deletecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56)" >Delete</button>
+                            <button onclick="window.location='/updatecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56)" >Edit</button>
+                            <button onclick="window.location='/deletecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56); padding-left: 30px;" >Delete</button>
 
                         </div>
                         </td>                

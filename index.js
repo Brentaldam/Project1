@@ -91,7 +91,7 @@ app.post("/search", async (req, res) => {
 });
 
  // Define the route for creating a new customer
- app.get( "/createnewcustomer", ( req, res ) => {
+ app.get( "/createnewcustomer/", ( req, res ) => {
     res.render( "createnewcustomer", {message:""} );
 
   });
@@ -179,31 +179,38 @@ app.post("/search", async (req, res) => {
     // });
 });
 
-    app.get("/updatecustomer", (req, res) => {
+    app.get("/updatecustomer/:id", (req, res) => {
         //res.send("Root resource - Up and running!")
-        res.render("updatecustomer", {
-        type: "get",
-        cus: req.body
+        const id = req.params.id;
+        dblib.getcustomerbyid(id)
+            .then(result => {
+                console.log(result);
+                res.render("updatecustomer", { x: result.cus, msg: "" })
+            })
+            .catch(error => {
+                result = { msg: 'error: ${error.msg}' };
+                res.render("updatecustomer", { result: result, msg: "" })
+            })
     });
-    });
+    
 
     
 
-const { updatecustomer } = require('./dblib.js');
-app.get('/updatecustomer/:cusid', (req, res) => {
-    var sql = `SELECT * FROM customer WHERE cusid = ${req.params.cusid}`;
-    pool.query(sql, (err, result) => {
-        if (err) {
-            return res.send(err.message);
-        }
-        res.render('updatecustomer', {
-            customer: result.rows[0], 
-            type: "get",
-            cus: req.body });
-    });
-});
+// const { updatecustomer } = require('./dblib.js');
+// app.get('/updatecustomer/:cusid', (req, res) => {
+//     var sql = `SELECT * FROM customer WHERE cusid = ${req.params.cusid}`;
+//     pool.query(sql, (err, result) => {
+//         if (err) {
+//             return res.send(err.message);
+//         }
+//         res.render('updatecustomer', {
+//             customer: result.rows[0], 
+//             type: "get",
+//             cus: req.body });
+//     });
+// });
 
-app.post('/updatecustomer', (req, res) => {
+app.post('/updatecustomer/:id', (req, res) => {
     var customer = {
         cusid: req.body.cusid,
         cusfname: req.body.cusfname,
@@ -215,12 +222,13 @@ app.post('/updatecustomer', (req, res) => {
 
 
 
-    updatecustomer(customer)
+    dblib.updatecustomer(customer)
         .then(result => {
             if (result.trans === "success") {
-                res.render(`customerupdated`);
+                res.render('updatecustomer', { success_msg: 'Customer Updated Successfully!', x: req.body, msg: result.msg2 });
+
             } else {
-                res.render('error', { error: result });
+                res.render('error', { error: result, msg: result.msg2 });
             }
         })
         .catch(err => {
@@ -242,12 +250,12 @@ app.post('/updatecustomer', (req, res) => {
     
     app.post('/deletecustomer/:id', (req, res) => {
         var cusid = req.body.cusid;
-        console.log("this is what we want: ",req.body);
-        console.log(req.body.cusid);
+        //console.log("this is what we want: ",req.body);
+        //console.log(req.body.cusid);
         dblib.deletecustomer(cusid)
             .then(result => {
                 if (result.trans === "success") {
-                    res.render('deletecustomer', { success_msg: 'Customer Deleted Successfully!', x:req.body, msg: result.msg2 });
+                    res.render('deletecustomer', { success_msg: 'Customer Deleted Successfully', x:req.body, msg: result.msg2 });
 
                 } else {
                     res.render('error', { error: result, msg: result.msg2 });

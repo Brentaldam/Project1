@@ -40,13 +40,15 @@ const insertcustomer = (customer) => {
         .then(res => {
             return {
                 trans: "success", 
-                msg: `customer id ${params[0]} successfully inserted`
+                msg: `customer id ${params[0]} successfully inserted`,
+                msg2: result.rowCount
             };
         })
         .catch(err => {
             return {
                 trans: "fail", 
-                msg: `Error on insert of customer id ${params[0]}.  ${err.message}`
+                msg: `Error on insert of customer id ${params[0]}.  ${err.message}`,
+                
             };
         });
 }; 
@@ -79,7 +81,7 @@ const findcustomers = (customer) => {
         sql += ` AND UPPER(cuslname) LIKE UPPER($${i})`;
         i++;
     };
-    if (customer.cusstalesytd !== "") {
+    if (customer.cussalesytd !== "") {
         params.push(parseFloat(customer.cussalesytd));
         sql += ` AND cussalesytd >= $${i}`;
         i++;
@@ -112,13 +114,15 @@ const updatecustomer = (customer) => {
         .then(result => {
             return {
                 trans: "success",
-                msg: `Customer id ${customer.cusid} successfully updated`
+                msg: `Customer id ${customer.cusid} successfully updated`,
+                msg2: result.rowCount
             };
         })
         .catch(err => {
             return {
                 trans: "fail",
                 msg: `Error on update of customer id ${customer.cusid}.  ${err.message}`
+                
             };
         });
 };
