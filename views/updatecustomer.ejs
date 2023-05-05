@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <td><label for="cusstate">State</label>:</td>
-            <td><input type="text" name="cusstate" id="cusstate" value="<%= x.cusstate %>" maxlength="2" required/></td>
+            <td><input type="text" name="cusstate" id="cusstate" value="<%= x.cusstate %>" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 character state" required/></td>
         </tr>
         <tr>
             <td><label for="cusSalesytd">Sales YTD</label>:</td>
@@ -34,5 +34,12 @@
         </tr>
     </table>
 </form>
+<%if (msg==="" ){%>
 
+    <% }else if (msg===1) {%>
+        <h1>Customer Updated Successfully!</h1>
+
+        <% } else { %>
+            <h1>Record Not Updated</h1>
+            <% };%>
 <%- include("_footer") -%>

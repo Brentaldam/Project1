@@ -14,7 +14,8 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
-    }
+    },
+    max: 2
 });
 
 // Add middleware to parse default urlencoded form
@@ -69,7 +70,7 @@ app.post("/search", async (req, res) => {
     //  Add it as a hidden form value.
     const totRecs = await dblib.getTotalRecords();
     /* console.log("search post", req.body) */
-   dblib.findcustomers(req.body)
+    dblib.findcustomers(req.body)
         .then(result => {
             console.log("resultis", result)
             res.render("search", {
@@ -90,14 +91,14 @@ app.post("/search", async (req, res) => {
         });
 });
 
- // Define the route for creating a new customer
- app.get( "/createnewcustomer/", ( req, res ) => {
-    res.render( "createnewcustomer", {message:""} );
+// Define the route for creating a new customer
+app.get("/createnewcustomer/", (req, res) => {
+    res.render("createnewcustomer", { message: "" });
 
-  });
+});
 
-  app.post( "/createnewcustomer", (req, res ) => {
-    dblib.insertcustomer( req.body )
+app.post("/createnewcustomer", (req, res) => {
+    dblib.insertcustomer(req.body)
         .then(result => {
             res.render("createnewcustomer", {
                 type: "post",
@@ -110,18 +111,18 @@ app.post("/search", async (req, res) => {
                 message: "Customer Creation Failed!"
             })
         });
-  });
+});
 
-    app.get("/import", async (req, res) => {
-        const totRecs = await dblib.getTotalRecords();
-        //res.send("Root resource - Up and running!")
-        res.render("import", {
-            type: "get",
-            totRecs: totRecs.totRecords,
-            
-        });
+app.get("/import", async (req, res) => {
+    const totRecs = await dblib.getTotalRecords();
+    //res.send("Root resource - Up and running!")
+    res.render("import", {
+        type: "get",
+        totRecs: totRecs.totRecords,
+
     });
-      
+});
+
 /*       app.post("/import",  upload.single('filename'), (req, res) => {
          if(!req.file || Object.keys(req.file).length === 0) {
              message = "Error: Import file not uploaded";
@@ -159,42 +160,42 @@ app.post("/search", async (req, res) => {
         });
     });
  */
-  app.get("/deletecustomer/:id", (req, res) => {
-        const id = req.params.id;
-        dblib.getcustomerbyid(id)
-            .then(result =>{ 
-                console.log(result);
-                res.render("deletecustomer", {x: result.cus, msg:""})
-            })
-            .catch(error => {
-                result= {msg: 'error: ${error.msg}'};
-                res.render("deletecustomer", { result: result, msg:""})
-            })
+app.get("/deletecustomer/:id", (req, res) => {
+    const id = req.params.id;
+    dblib.getcustomerbyid(id)
+        .then(result => {
+            console.log(result);
+            res.render("deletecustomer", { x: result.cus, msg: "" })
+        })
+        .catch(error => {
+            result = { msg: 'error: ${error.msg}' };
+            res.render("deletecustomer", { result: result, msg: "" })
+        })
 
-         //   console.log(req.params.id);
-        //res.send("Root resource - Up and running!")
+    //   console.log(req.params.id);
+    //res.send("Root resource - Up and running!")
     //     res.render("deletecustomer", {
     //     type: "get",
     //     cus: req.body
     // });
 });
 
-    app.get("/updatecustomer/:id", (req, res) => {
-        //res.send("Root resource - Up and running!")
-        const id = req.params.id;
-        dblib.getcustomerbyid(id)
-            .then(result => {
-                console.log(result);
-                res.render("updatecustomer", { x: result.cus, msg: "" })
-            })
-            .catch(error => {
-                result = { msg: 'error: ${error.msg}' };
-                res.render("updatecustomer", { result: result, msg: "" })
-            })
-    });
-    
+app.get("/updatecustomer/:id", (req, res) => {
+    //res.send("Root resource - Up and running!")
+    const id = req.params.id;
+    dblib.getcustomerbyid(id)
+        .then(result => {
+            console.log(result);
+            res.render("updatecustomer", { x: result.cus, msg: "" })
+        })
+        .catch(error => {
+            result = { msg: 'error: ${error.msg}' };
+            res.render("updatecustomer", { result: result, msg: "" })
+        })
+});
 
-    
+
+
 
 // const { updatecustomer } = require('./dblib.js');
 // app.get('/updatecustomer/:cusid', (req, res) => {
@@ -235,113 +236,120 @@ app.post('/updatecustomer/:id', (req, res) => {
             res.render('error', { error: err });
         });
 });
-    
-    // const { deletecustomer } = require('./dblib.js');
-    // app.get("/deletecustomer/", (req, res) => {
-    //     var sql = `SELECT * FROM customer WHERE cusid = ${req.params.cusid}`;
-    //     pool.query(sql, (err, result) => {
-    //         if (err) {
-    //             return res.send(err.message);
-    //         }
-    //         res.render('deletecustomer', { customer: result.rows[0] });
-    //     });
-    // });
-    
-    
-    app.post('/deletecustomer/:id', (req, res) => {
-        var cusid = req.body.cusid;
-        //console.log("this is what we want: ",req.body);
-        //console.log(req.body.cusid);
-        dblib.deletecustomer(cusid)
-            .then(result => {
-                if (result.trans === "success") {
-                    res.render('deletecustomer', { success_msg: 'Customer Deleted Successfully', x:req.body, msg: result.msg2 });
 
-                } else {
-                    res.render('error', { error: result, msg: result.msg2 });
-                }
-            })
-            .catch(err => {
-                res.render('error', { error: err });
-            });
-    });
-    
+// const { deletecustomer } = require('./dblib.js');
+// app.get("/deletecustomer/", (req, res) => {
+//     var sql = `SELECT * FROM customer WHERE cusid = ${req.params.cusid}`;
+//     pool.query(sql, (err, result) => {
+//         if (err) {
+//             return res.send(err.message);
+//         }
+//         res.render('deletecustomer', { customer: result.rows[0] });
+//     });
+// });
+
+
+app.post('/deletecustomer/:id', (req, res) => {
+    var cusid = req.body.cusid;
+    //console.log("this is what we want: ",req.body);
+    //console.log(req.body.cusid);
+    dblib.deletecustomer(cusid)
+        .then(result => {
+            if (result.trans === "success") {
+                res.render('deletecustomer', { success_msg: 'Customer Deleted Successfully', x: req.body, msg: result.msg2 });
+
+            } else {
+                res.render('error', { error: result, msg: result.msg2 });
+            }
+        })
+        .catch(err => {
+            res.render('error', { error: err });
+        });
+});
+
 //     app.get("/import", async (req, res) => {
 //         const totRecs = await dblib.getTotalRecords();
 //         res.render("import", {
 //             type: "get",
 //             totRecs: totRecs.totRecords,
-    
+
 //         });
 //       });
-      
-            
-      app.post("/import",  upload.single('filename'), (req, res) => {
-         if(!req.file || Object.keys(req.file).length === 0) {
-             message = "Error: Import file not uploaded";
-             return res.send(message);
-         };
-         const buffer = req.file.buffer; 
-         const lines = buffer.toString().split(/\r?\n/);
-         let numRecordsInserted = 0;
-         let numRecordsNotInserted = 0;
-         let errors = []; 
-         lines.forEach(line => {
-              product = line.split(",");
-          const sql = 'INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)';
-              pool.query(sql, product, (err, result) => {
-                  if (err) {
-                      numRecordsNotInserted++;
-                      errors.push(`Line: ${line} Error: ${err.message}`);
-                      console.log(`Error message: ${err.message}`);
-                  } else {
-                      numRecordsInserted++;
-                  }
-             });
-         });
-      
-         let message = "Import Summary:\n";
-         message += `Records Processed: ${lines.length}\n`;
-         message += `Records Inserted Successfully: ${numRecordsInserted}\n`;
-         message += `Records Not Inserted: ${numRecordsNotInserted}\n`;
-         
-         errors.forEach(error => {
-             message += `${error}\n`;
-         });
-         res.send(message);
-      });
-      
-      app.get("/export", async (req, res) => {
-        var message = "";
-        const totRecs = await dblib.getTotalRecords();
-        res.render("export",{ 
-            message: message,
-            type: "get",
-            totRecs: totRecs.totRecords});
-       });
-       
-       
-       app.post("/export", (req, res) => {
-        const sql = "SELECT * FROM customer ORDER BY cusid";
-        pool.query(sql, [], (err, result) => {
-            var message = "";
-            if(err) {
-                message = `Error - ${err.message}`;
-                res.render("export", { message: message })
-            } else {
-                var output = "";
-                result.rows.forEach(customer => {
-                    output += `${customer.cusid},${customer.cusfname},${customer.cuslname},${customer.cusstate},${customer.cussalesytd},${customer.cussalesprev}\r\n`;
-                });
-                
-                res.header("Content-Type", "text/plain");
-                res.attachment(req.body.filename + ".txt");
-                return res.send(output);
-            };
-        });
-     }); 
 
+
+
+
+app.post("/import", upload.single('filename'), async (req, res) => {
+    if (!req.file || Object.keys(req.file).length === 0) {
+        message = "Error: Import file not uploaded";
+        return res.send(message);
+    };
     
+    const buffer = req.file.buffer;
+    const lines = buffer.toString().split(/\r?\n/);
+    let numRecordsInserted = 0;
+    let numRecordsNotInserted = 0;
+    let errors = [];
+    //         lines.forEach(line => {
+
+    for (rec of lines) {
+        product = rec.split(",");
+        //console.log("Product prior to insertRecord is: ", product);
+        const result = await dblib.insertRecord(product);
+        if (result === "success") {
+            numRecordsInserted++;
+        } else {
+            numRecordsNotInserted++;
+            errors.push(`Customer id: ${product[0]} - ${result}`);
+        }
+    }
+
+    let message = "Import Summary:\n";
+    message += `Records Processed: ${lines.length}\n`;
+    message += `Records Inserted Successfully: ${numRecordsInserted}\n`;
+    message += `Records Not Inserted: ${numRecordsNotInserted}\n`;
+
+    console.log("ERROR ARRAY IS **********", errors);
+    for (e of errors) {
+        message += `${e}\n`;
+    };
+    res.send(message);
+
+
+})
+
+app.get("/export", async (req, res) => {
+    var message = "";
+    const totRecs = await dblib.getTotalRecords();
+    res.render("export", {
+        message: message,
+        type: "get",
+        totRecs: totRecs.totRecords
+    });
+})
+
+
+app.post("/export", (req, res) => {
+    const sql = "SELECT * FROM customer ORDER BY cusid";
+    pool.query(sql, [], (err, result) => {
+        var message = "";
+        if (err) {
+            message = `Error - ${err.message}`;
+            res.render("export", { message: message })
+        } else {
+            var output = "";
+            result.rows.forEach(customer => {
+                output += `${customer.cusid},${customer.cusfname},${customer.cuslname},${customer.cusstate},${customer.cussalesytd},${customer.cussalesprev}\r\n`;
+            });
+
+            res.header("Content-Type", "text/plain");
+            res.attachment(req.body.filename + ".txt");
+            return res.send(output);
+        };
+    });
+});
+
+
 // Start listener
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server started (http://localhost:3000/) !");

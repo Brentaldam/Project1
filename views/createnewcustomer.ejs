@@ -22,15 +22,15 @@
     </tr>
     <tr>
       <td><label for="cusstate">State</label>:</td>
-      <td><input type="text" name="cusstate" id="cusstate"/></td>
+      <td><input type="text" name="cusstate" id="cusstate" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 character state"/></td>
     </tr>
     <tr>
       <td><label for="cusSalesytd">State YTD</label>:</td>
-      <td><input type="text" name="cussalesytd" id="cusSalesytd" /></td>
+      <td><input type="number" name="cussalesytd" id="cusSalesytd" /></td>
     </tr>
     <tr>
       <td><label for="cussalesprev">Previous Years Sales</label>:</td>
-      <td><input type="text" name="cussalesprev" id="cussalesprev"/></td>
+      <td><input type="number" name="cussalesprev" id="cussalesprev"/></td>
     </tr>
     <tr>
       <td span="2">
@@ -54,10 +54,10 @@
                                   <div class="charactor__face2"></div>
                                 </div>
                             </button>&nbsp;&nbsp;&nbsp;
-                            <button class="button-arounder" type="reset" value="Reset">Reset</button>
+                            <button class="button-arounder2" type="reset" value="Reset">Reset</button>
       </td>
     </tr>
   </table>
 </form>
-<%message%>
+
 <%- include("_footer") -%>   

@@ -6,7 +6,8 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
-    }
+    },
+    max: 2
 });
 
 const getTotalRecords = () => {
@@ -25,7 +26,7 @@ const getTotalRecords = () => {
         });
 };
 
-module.exports.getTotalRecords = getTotalRecords;
+
 
 const insertcustomer = (customer) => {
     // Will accept either a customer array or customer object
@@ -39,19 +40,20 @@ const insertcustomer = (customer) => {
     return pool.query(sql, params)
         .then(res => {
             return {
-                trans: "success", 
+                trans: "success",
                 msg: `customer id ${params[0]} successfully inserted`,
                 msg2: result.rowCount
             };
         })
         .catch(err => {
             return {
-                trans: "fail", 
+                trans: "fail",
                 msg: `Error on insert of customer id ${params[0]}.  ${err.message}`,
-                
+
             };
         });
-}; 
+};
+
 
 
 
@@ -66,7 +68,7 @@ const findcustomers = (customer) => {
     sql = "SELECT * FROM customer WHERE true";
 
     // Check data provided and build query as necessary
-     if (customer.cusid !== "") {
+    if (customer.cusid !== "") {
         params.push(parseInt(customer.cusid));
         sql += ` AND cusid = $${i}`;
         i++;
@@ -81,20 +83,30 @@ const findcustomers = (customer) => {
         sql += ` AND UPPER(cuslname) LIKE UPPER($${i})`;
         i++;
     };
+    if (customer.cusstate !== "") {
+        params.push(`${customer.cusstate}%`);
+        sql += ` AND UPPER(cusstate) LIKE UPPER($${i})`;
+        i++;
+    };
     if (customer.cussalesytd !== "") {
         params.push(parseFloat(customer.cussalesytd));
         sql += ` AND cussalesytd >= $${i}`;
         i++;
     };
+    if (customer.cussalesprev !== "") {
+        params.push(parseFloat(customer.cussalesprev));
+        sql += ` AND cussalesprev >= $${i}`;
+        i++;
+    };
 
     sql += ` ORDER BY cusid`;
     // for debugging
-     console.log("sql: " + sql);
-     console.log("params: " + params);
+    console.log("sql: " + sql);
+    console.log("params: " + params);
 
     return pool.query(sql, params)
         .then(result => {
-            return { 
+            return {
                 trans: "success",
                 result: result.rows
             }
@@ -122,7 +134,7 @@ const updatecustomer = (customer) => {
             return {
                 trans: "fail",
                 msg: `Error on update of customer id ${customer.cusid}.  ${err.message}`
-                
+
             };
         });
 };
@@ -143,7 +155,7 @@ const deletecustomer = (cusid) => {
             };
         })
         .catch(err => {
-            console.log("delete customer fail",cusid)
+            console.log("delete customer fail", cusid)
             return {
                 trans: "fail",
                 msg: `Error on delete of customer id ${cusid}.  ${err.message}`
@@ -173,10 +185,37 @@ const getcustomerbyid = (cusid) => {
 };
 
 
+const insertRecord = (product) => {
+    const sql = 'INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)';
+
+    return pool.query(sql, product)
+        .then(result => {
+            return "success";
+        })
+        .catch(err => {
+            console.log(`Error message: ${err.message}`);
+            return `Error: ${err.message}`;
+        })
+    // pool.query(sql, product, (err, result) => {
+    //     //console.log("Product in insertRecord is: ", product);
+    //     if (err) {
+    //         //numRecordsNotInserted++;
+    //         //errors.push(`Line: ${line} Error: ${err.message}`);
+    //         console.log(`Error message: ${err.message}`);
+    //         return `Error: ${err.message}`;
+    //     } else {
+    //         return "success";
+    //         //numRecordsInserted++;
+    //     }
+    // });
+
+}
+
 // Add this at the bottom
 module.exports.insertcustomer = insertcustomer;
 module.exports.deletecustomer = deletecustomer;
-module.exports.updatecustomer = updatecustomer; 
-module.exports.getcustomerbyid = getcustomerbyid; 
-// Add towards the bottom of the page
+module.exports.updatecustomer = updatecustomer;
+module.exports.getcustomerbyid = getcustomerbyid;
+module.exports.insertRecord = insertRecord;
+module.exports.getTotalRecords = getTotalRecords;
 module.exports.findcustomers = findcustomers;
