@@ -39,13 +39,15 @@ const insertcustomer = (customer) => {
     const sql = 'INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)';
     return pool.query(sql, params)
         .then(res => {
+            console.log("success")
             return {
                 trans: "success",
-                msg: `customer id ${params[0]} successfully inserted`,
+                msg: `customer ID: ${params[0]} successfully inserted`,
                 msg2: result.rowCount
             };
         })
         .catch(err => {
+            console.log("fail")
             return {
                 trans: "fail",
                 msg: `Error on insert of customer id ${params[0]}.  ${err.message}`,

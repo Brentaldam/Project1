@@ -1,110 +1,131 @@
 <%- include("_header") -%>
 
-<h2> Find Customers</h2>
+    <h2> Find Customers</h2>
 
-<h4>Total number of records in the database: <span style="color: lightgreen;"><%= totRecs %></span></h4>
+    <h4>Total number of records in the database: <span style="color: lightgreen;">
+            <%= totRecs %>
+        </span></h4>
 
-<form action="/search" method="POST">
-    <table>
-        <tr>
-            <td><label for="cusid">ID</label>:</td>
-            <td><input type="number" name="cusid" id="cusid" value="<%= cus.cusid %>" /></td>
-            <td>(equals)</td>
-        </tr>
-        <tr>
-            <td><label for="cusFname">First Name</label>:</td>
-            <td><input type="text" name="cusfname" id="cusfname" value="<%= cus.cusfname %>" /></td>
-            <td>(begins with)</td>
-        </tr>
-        <tr>
-            <td><label for="cusLname">Last Name</label>:</td>
-            <td><input type="text" name="cuslname" id="cuslname" value="<%= cus.cuslname %>" /></td>
-            <td>(begins with)</td>
-        </tr>
-        <tr>
-            <td><label for="cusstate">State</label>:</td>
-            <td><input type="text" name="cusstate" id="cusstate" value="<%= cus.cusstate %>" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 character state"/></td>
-            <td>(equals)</td>
-        </tr>
-        <tr>
-            <td><label for="cusSalesytd">Sales YTD</label>:</td>
-            <td><input type="number" name="cussalesytd" id="cusSalesytd" value="<%= cus.cussalesytd %>" /></td>
-            <td>(greater than or equal to)</td>
-        </tr>
-        <tr>
-            <td><label for="cussalesprev">Previous Years Sales</label>:</td>
-            <td><input type="number" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
-            <td>(greater than or equal to)</td>
-        </tr>
-        
+    <form action="/search" method="POST">
+        <table>
+            <tr>
+                <td><label for="cusid">ID</label>:</td>
+                <td><input type="number" name="cusid" id="cusid" value="<%= cus.cusid %>" /></td>
+                <td>(equals)</td>
+            </tr>
+            <tr>
+                <td><label for="cusFname">First Name</label>:</td>
+                <td><input type="text" name="cusfname" id="cusfname" value="<%= cus.cusfname %>" /></td>
+                <td>(begins with)</td>
+            </tr>
+            <tr>
+                <td><label for="cusLname">Last Name</label>:</td>
+                <td><input type="text" name="cuslname" id="cuslname" value="<%= cus.cuslname %>" /></td>
+                <td>(begins with)</td>
+            </tr>
+            <tr>
+                <td><label for="cusstate">State</label>:</td>
+                <td><input type="text" name="cusstate" id="cusstate" value="<%= cus.cusstate %>" pattern="[A-Za-z]{2}"
+                        maxlength="2" Title="Enter a 2 letter state" /></td>
+                <td>(equals)</td>
+            </tr>
+            <tr>
+                <td><label for="cusSalesytd">Sales YTD</label>:</td>
+                <td><input type="number" name="cussalesytd" id="cusSalesytd" value="<%= cus.cussalesytd %>" /></td>
+                <td>(greater than or equal to)</td>
+            </tr>
+            <tr>
+                <td><label for="cussalesprev">Previous Years Sales</label>:</td>
+                <td><input type="number" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
+                <td>(greater than or equal to)</td>
+            </tr>
+
             <td span="2">
 
                 <br>
                 <br>
-                    <button class="button button--pen" type="submit" value="Find" style="float:left">
-                        <div class="button__wrapper">
-                            <span class="button__text">Find</span>
+                <button class="button button--pen" type="submit" value="Find" style="float:left">
+                    <div class="button__wrapper">
+                        <span class="button__text">Find</span>
+                    </div>
+                    <div class="characterBox">
+                        <div class="character wakeup">
+                            <div class="character__face"></div>
+                            <div class="charactor__face2"></div>
                         </div>
-                        <div class="characterBox">
-                            <div class="character wakeup">
-                                <div class="character__face"></div>
-                                <div class="charactor__face2"></div>
-                            </div>
-                            <div class="character wakeup">
-                                <div class="character__face"></div>
-                                <div class="charactor__face2"></div>
-                            </div>
-                            <div class="character">
-                                <div class="character__face"></div>
-                                <div class="charactor__face2"></div>
-                            </div>
-                    </button>&nbsp;&nbsp;&nbsp;
-                    <button class="button-arounder" type="reset" value="Reset">Reset</button>
-                    
+                        <div class="character wakeup">
+                            <div class="character__face"></div>
+                            <div class="charactor__face2"></div>
+                        </div>
+                        <div class="character">
+                            <div class="character__face"></div>
+                            <div class="charactor__face2"></div>
+                        </div>
+                </button>&nbsp;&nbsp;&nbsp;
+                <button class="button-arounder" type="reset" value="Reset">Reset</button>
+
             </td>
-        
-    </table>
-</form>
-
-<!-- Omitted Error Checking / Needs to be added -->
-<% if (type === "post") { %>
-    <% if (result.result.length === 0) { %>
-        <h3>No records found!</h3>
-    <% } else { %>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>State</th>
-                    <th>Sales YTD</th>
-                    <th>Previous Years Sales</th>
-                    <th><button class='create' onclick="window.location='/createnewcustomer';">Create Customer</button></th>
-                </tr>
-            </thead>
-            <tbody>
-                <% result.result.forEach(customer => { %> 
-                    <tr>
-                        <td><%= customer.cusid %> </td>
-                        <td><%= customer.cusfname %> </td>
-                        <td><%= customer.cuslname %> </td>
-                        <td><%= customer.cusstate %> </td>
-                        <td><%= customer.cussalesytd %> </td>
-                        <td><%= customer.cussalesprev %> </td>
-                        <td span="2">
-                            <div class="buttons" >
-                            <button onclick="window.location='/updatecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56)" >Edit</button>
-                            <button onclick="window.location='/deletecustomer/<%= customer.cusid %>';" style="background-color: rgb(57, 56, 56); padding-left: 30px;" >Delete</button>
-
-                        </div>
-                        </td>                
-                    </tr>
-                <% }); %>
-            </tbody>
 
         </table>
-    <% } %>
-<% } %>
+    </form>
 
-<%- include("_footer") -%>   
+    <!-- Omitted Error Checking / Needs to be added -->
+    <% if (type==="post" ) { %>
+        <% if (result.result.length===0) { %>
+            <h4>No records found!</h4>
+            <% } else { %>
+                <h4>Number of Records Found: <span style="color: lightgreen;">
+                        <%= result.result.length %>
+                    </span></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>State</th>
+                            <th>Sales YTD</th>
+                            <th>Previous Years Sales</th>
+                            <th><button class='create' onclick="window.location='/createnewcustomer';">Create
+                                    Customer</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% result.result.forEach(customer=> { %>
+                            <tr>
+                                <td>
+                                    <%= customer.cusid %>
+                                </td>
+                                <td>
+                                    <%= customer.cusfname %>
+                                </td>
+                                <td>
+                                    <%= customer.cuslname %>
+                                </td>
+                                <td>
+                                    <%= customer.cusstate %>
+                                </td>
+                                <td>
+                                    <%= customer.cussalesytd %>
+                                </td>
+                                <td>
+                                    <%= customer.cussalesprev %>
+                                </td>
+                                <td span="2">
+                                    <div class="buttons">
+                                        <button onclick="window.location='/updatecustomer/<%= customer.cusid %>';"
+                                            style="background-color: rgb(57, 56, 56)">Edit</button>
+                                        <button onclick="window.location='/deletecustomer/<%= customer.cusid %>';"
+                                            style="background-color: rgb(57, 56, 56); padding-left: 30px;">Delete</button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+
+                </table>
+                <% } %>
+                    <% } %>
+
+                        <%- include("_footer") -%>

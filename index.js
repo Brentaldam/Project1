@@ -93,7 +93,7 @@ app.post("/search", async (req, res) => {
 
 // Define the route for creating a new customer
 app.get("/createnewcustomer/", (req, res) => {
-    res.render("createnewcustomer", { message: "" });
+    res.render("createnewcustomer", { message: "" },);
 
 });
 
@@ -106,6 +106,7 @@ app.post("/createnewcustomer", (req, res) => {
             })
         })
         .catch(err => {
+            console.log("catch Activated");
             res.render("createnewcustomer", {
                 type: "post",
                 message: "Customer Creation Failed!"
@@ -291,7 +292,6 @@ app.post("/import", upload.single('filename'), async (req, res) => {
     let numRecordsNotInserted = 0;
     let errors = [];
     //         lines.forEach(line => {
-
     for (rec of lines) {
         product = rec.split(",");
         //console.log("Product prior to insertRecord is: ", product);
@@ -300,7 +300,7 @@ app.post("/import", upload.single('filename'), async (req, res) => {
             numRecordsInserted++;
         } else {
             numRecordsNotInserted++;
-            errors.push(`Customer id: ${product[0]} - ${result}`);
+            errors.push(`Customer ID: ${product[0]} - ${result}`);
         }
     }
 
@@ -309,7 +309,7 @@ app.post("/import", upload.single('filename'), async (req, res) => {
     message += `Records Inserted Successfully: ${numRecordsInserted}\n`;
     message += `Records Not Inserted: ${numRecordsNotInserted}\n`;
 
-    console.log("ERROR ARRAY IS **********", errors);
+    // console.log("ERROR ARRAY IS **********", errors);
     for (e of errors) {
         message += `${e}\n`;
     };

@@ -10,14 +10,16 @@
     <button class="button-82-pushable" role="button" type="submit"><span class="button-82-shadow"></span><span
             class="button-82-edge"></span><span class="button-82-front text">Import Customers</span></button>
 </form>
-<p id="result"></p>
+<h4 id="result"></h4>
 
-<p id="result"></p>
+
 
 <script>
     document.querySelector("form").addEventListener("submit", e => {
       e.preventDefault();
       const formData = new FormData(e.target);
+    const x = document.getElementById("result");
+    x.innerText = "Wait for results...";
       fetch("/import", {
         method: "POST",
         body: formData

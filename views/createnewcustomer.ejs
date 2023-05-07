@@ -22,7 +22,7 @@
     </tr>
     <tr>
       <td><label for="cusstate">State</label>:</td>
-      <td><input type="text" name="cusstate" id="cusstate" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 character state"/></td>
+      <td><input type="text" name="cusstate" id="cusstate" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 letter state"/></td>
     </tr>
     <tr>
       <td><label for="cusSalesytd">State YTD</label>:</td>
@@ -59,5 +59,13 @@
     </tr>
   </table>
 </form>
+<h3 id="result"></h3>
 
+<%if(message === ""){%>
+
+<%}else if(message === "Customer Created Successfully!" ){%>
+  <h4>New Customer Created!</h4>
+  <%}else{%>
+    <h4>Error creating new customer</h4>
+    <%}%>
 <%- include("_footer") -%>   
