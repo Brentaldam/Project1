@@ -37,17 +37,18 @@ const insertcustomer = (customer) => {
     };
 
     const sql = 'INSERT INTO customer (cusid, cusfname, cuslname, cusstate, cussalesytd, cussalesprev) VALUES ($1, $2, $3, $4, $5, $6)';
+    console.log("sql is:", sql);
+    console.log("params are:", params);
     return pool.query(sql, params)
         .then(res => {
-            console.log("success")
+            console.log(res, "this is res in dblib");
             return {
                 trans: "success",
-                msg: `customer ID: ${params[0]} successfully inserted`,
-                msg2: result.rowCount
+                msg: `customer ID: ${params[0]} successfully inserted`
             };
         })
         .catch(err => {
-            console.log("fail")
+            console.log("dblib error",err.message);
             return {
                 trans: "fail",
                 msg: `Error on insert of customer id ${params[0]}.  ${err.message}`,

@@ -92,25 +92,44 @@ app.post("/search", async (req, res) => {
 });
 
 // Define the route for creating a new customer
-app.get("/createnewcustomer/", (req, res) => {
-    res.render("createnewcustomer", { message: "" },);
+app.get("/createnewcustomer/",  (req, res) => {
+    const cus = {
+        cusid: "",
+        cusfname: "",
+        cuslname: "",
+        cusstate: "",
+        cussalesytd: "",
+        cussalesprev: "",
+
+    };
+    res.render("createnewcustomer", { 
+        type: "get",
+        cus: cus
+    },);
 
 });
 
-app.post("/createnewcustomer", (req, res) => {
+app.post("/createnewcustomer",  (req, res) => {
     dblib.insertcustomer(req.body)
         .then(result => {
-            res.render("createnewcustomer", {
-                type: "post",
-                message: "Customer Created Successfully!"
-            })
+          console.log(result, "this is result index");
+
+            // res.render("createnewcustomer", {
+            //     type: "post",
+            //     trans: result.trans,
+            //     message: result.msg,
+            //     cus: req.body
+                
+            // });
+            
         })
         .catch(err => {
             console.log("catch Activated");
-            res.render("createnewcustomer", {
-                type: "post",
-                message: "Customer Creation Failed!"
-            })
+            // res.render("createnewcustomer", {
+            //     type: "post",
+            //     message: err.msg,
+            //     cus: req.body
+            // });
         });
 });
 
@@ -343,7 +362,7 @@ app.post("/export", (req, res) => {
             });
 
             res.header("Content-Type", "text/plain");
-            res.attachment(req.body.filename + ".txt");
+            res.attachment(req.body.filename);
             return res.send(output);
         };
     });

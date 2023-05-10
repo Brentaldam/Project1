@@ -1,71 +1,86 @@
 <%- include("_header") -%>
 
-<h2>Create New Customer</h2>
+  <h2>Create New Customer</h2>
 
-<!-- Not using bootstrap, just a simple form that you may enhance -->
-<form action="/createnewcustomer" method="POST">
-  <table>
-    <tr>
-      <td><label for="cusid">ID</label>:</td>
-      <td><input type="number" name="cusid" id="cusid" required/></td>
-      <td>(Required)</td>
-    </tr>
-    <tr>
-      <td><label for="cusFname">First Name</label>:</td>
-      <td><input type="text" name="cusfname" id="cusfname" required/></td>
-      <td>(Required)</td>
-    </tr>
-    <tr>
-      <td><label for="cusLname">Last Name</label>:</td>
-      <td><input type="text" name="cuslname" id="cuslname" required/></td>
-      <td>(Required)</td>
-    </tr>
-    <tr>
-      <td><label for="cusstate">State</label>:</td>
-      <td><input type="text" name="cusstate" id="cusstate" pattern="[A-Za-z]{2}" maxlength="2" Title="Enter a 2 letter state"/></td>
-    </tr>
-    <tr>
-      <td><label for="cusSalesytd">State YTD</label>:</td>
-      <td><input type="number" name="cussalesytd" id="cusSalesytd" /></td>
-    </tr>
-    <tr>
-      <td><label for="cussalesprev">Previous Years Sales</label>:</td>
-      <td><input type="number" name="cussalesprev" id="cussalesprev"/></td>
-    </tr>
-    <tr>
-      <td span="2">
-              <br>
-              <br>
-                            <button class="button button--hoo" type="submit" value="Create Customer" style="float:left">
-                              <div class="button__wrapper">
-                                <span class="button__text">Create Customer</span>
-                              </div>
-                              <div class="characterBox">
-                                <div class="character wakeup">
-                                  <div class="character__face"></div>
-                                  <div class="charactor__face2"></div>
-                                </div>
-                                <div class="character wakeup">
-                                  <div class="character__face"></div>
-                                  <div class="charactor__face2"></div>
-                                </div>
-                                <div class="character">
-                                  <div class="character__face"></div>
-                                  <div class="charactor__face2"></div>
-                                </div>
-                            </button>&nbsp;&nbsp;&nbsp;
-                            <button class="button-arounder2" type="reset" value="Reset">Reset</button>
-      </td>
-    </tr>
-  </table>
-</form>
-<h3 id="result"></h3>
+  <!-- Not using bootstrap, just a simple form that you may enhance -->
+  <form action="/createnewcustomer" method="POST" id="formID">
+    <table>
+      <tr>
+        <td><label for="cusid">ID</label>:</td>
+        <td><input type="number" name="cusid" id="cusid" value="<%= cus.cusid %>" required /></td>
+        <td>(Required)</td>
+      </tr>
+      <tr>
+        <td><label for="cusFname">First Name</label>:</td>
+        <td><input type="text" name="cusfname" id="cusfname" value="<%= cus.cusfname %>" required /></td>
+        <td>(Required)</td>
+      </tr>
+      <tr>
+        <td><label for="cusLname">Last Name</label>:</td>
+        <td><input type="text" name="cuslname" id="cuslname" value="<%= cus.cuslname %>" required /></td>
+        <td>(Required)</td>
+      </tr>
+      <tr>
+        <td><label for="cusstate">State</label>:</td>
+        <td><input type="text" name="cusstate" id="cusstate" value="<%= cus.cusstate %>" pattern="[A-Za-z]{2}"
+            maxlength="2" Title="Enter a 2 letter state" /></td>
+      </tr>
+      <tr>
+        <td><label for="cusSalesytd">State YTD</label>:</td>
+        <td><input type="number" name="cussalesytd" id="cusSalesytd" value="<%= cus.cussalesytd %>" /></td>
+      </tr>
+      <tr>
+        <td><label for="cussalesprev">Previous Years Sales</label>:</td>
+        <td><input type="number" name="cussalesprev" id="cussalesprev" value="<%= cus.cussalesprev %>" /></td>
+      </tr>
+      <tr>
+        <td span="2">
+          <br>
+          <br>
+          <button class="button button--hoo" type="submit" value="Create Customer" style="float:left">
+            <div class="button__wrapper">
+              <span class="button__text">Create Customer</span>
+            </div>
+            <div class="characterBox">
+              <div class="character wakeup">
+                <div class="character__face"></div>
+                <div class="charactor__face2"></div>
+              </div>
+              <div class="character wakeup">
+                <div class="character__face"></div>
+                <div class="charactor__face2"></div>
+              </div>
+              <div class="character">
+                <div class="character__face"></div>
+                <div class="charactor__face2"></div>
+              </div>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button class="button-arounder2" type="reset" value="Reset">Reset</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <h3 id="result"></h3>
+  <!-- <script>
+    const form = document.getElementById("formID");
+  form.addEventListener("submit", (e) => {
+    e.returnValue = false
+    // api route call
+    const form1 = new FormData(document.getElementById("formID"));
+    fetch("/createnewcustomer", {
+      method: "POST",
+      body: form1,
+  });
+});
+  </script> -->
 
-<%if(message === ""){%>
+  <%if(type==="post" ){%>
 
-<%}else if(message === "Customer Created Successfully!" ){%>
-  <h4>New Customer Created!</h4>
-  <%}else{%>
-    <h4>Error creating new customer</h4>
+    <%if(trans === "success" ){%>
+      <h4>New Customer Created!</h4>
+    <%}else{%>
+      <h4>Error creating new customer</h4>
+      <%= message %>
     <%}%>
-<%- include("_footer") -%>   
+  <%}%> 
+          <%- include("_footer") -%>
