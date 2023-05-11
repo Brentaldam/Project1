@@ -51,8 +51,7 @@ const insertcustomer = (customer) => {
             console.log("dblib error",err.message);
             return {
                 trans: "fail",
-                msg: `Error on insert of customer id ${params[0]}.  ${err.message}`,
-
+                msg: `Error:  ${err.message}`
             };
         });
 };

@@ -114,22 +114,22 @@ app.post("/createnewcustomer",  (req, res) => {
         .then(result => {
           console.log(result, "this is result index");
 
-            // res.render("createnewcustomer", {
-            //     type: "post",
-            //     trans: result.trans,
-            //     message: result.msg,
-            //     cus: req.body
+            res.render("createnewcustomer", {
+                type: "post",
+                trans: result.trans,
+                message: result.msg,
+                cus: req.body
                 
-            // });
+            });
             
         })
         .catch(err => {
             console.log("catch Activated");
-            // res.render("createnewcustomer", {
-            //     type: "post",
-            //     message: err.msg,
-            //     cus: req.body
-            // });
+            res.render("createnewcustomer", {
+                type: "post",
+                message: err.msg,
+                cus: req.body
+            });
         });
 });
 
